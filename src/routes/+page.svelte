@@ -13,7 +13,7 @@
 </script>
 
 <h6>Loading data in<br /><code>+page.svelte</code></h6>
-
+<h1 class="h1 font-bold">Tailwind</h1>
 <a
 	href="#load"
 	role="button"
