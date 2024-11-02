@@ -1,0 +1,51 @@
+model ModuleStat {
+  id          String       @id @default(cuid())
+  // lang String 
+  completed      Boolean       @default(false)
+
+  // progress Int @default(0)
+  completedLessonCounts Int @default(0)
+  status StatStatus @default(created)
+  // totalLessons Int @default(0)
+  prev String?
+  next  String?
+
+  module Module @relation(fields: [moduleId], references: [id],onDelete: Cascade)
+  moduleId String 
+
+  user User @relation(fields: [userId], references: [id],onDelete: Cascade)
+  userId String
+  
+
+  @@unique([moduleId,userId])
+}
+
+model Module {
+  id          String       @id @default(cuid())
+  ind         Int
+  title       String
+  langName    String
+  lang        String
+  description String?
+  type        LessonKinds   @default(learn)
+  courseId    String
+  status        Status @default(idle)
+  // courseStats CourseStat[]
+  lessons     Lesson[]
+  course      Course       @relation(fields: [courseId], references: [id], onDelete: Cascade)
+  
+  // navigations 
+  nextModuleId String? 
+  prevModuleId String?
+  firstLessonId String?
+  stats ModuleStat[]
+
+  @@unique([courseId, title, ind,type])
+}
+
+// enum ModuleKinds {
+//   module
+//   vocabs
+//   grammars
+//   stories
+// }

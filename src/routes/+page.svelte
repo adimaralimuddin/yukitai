@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { page } from '$app/stores';
-	import { trpc } from '$lib/trpc/client';
+	import { trpc } from '$lib/app/db/trpc/client';
 
 	let greeting = 'press the button to load data';
 	let loading = false;
@@ -8,12 +8,13 @@
 	const loadData = async () => {
 		loading = true;
 		greeting = await trpc($page).greeting.query();
+
 		loading = false;
 	};
 </script>
 
 <h6>Loading data in<br /><code>+page.svelte</code></h6>
-<h1 class="h1 font-bold">Tailwind</h1>
+<h1 class="h1 font-bold text-red-400">Tailwind added</h1>
 <a
 	href="#load"
 	role="button"

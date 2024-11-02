@@ -1,0 +1,99 @@
+model LineTran {
+  id        String @id @default(cuid())
+  native    String
+  value     String
+  // relations
+  line      Line @relation(fields: [lineId],references: [id] ,onDelete: Cascade)
+  lineId    String
+}
+
+model Line {
+
+
+  // experiments 
+
+  trans LineTran[] 
+  skipable  Boolean @default(false)
+
+  // regular
+  id          String          @id @default(cuid())
+  ind         Int             @default(autoincrement())
+  lang        String
+  type        LineVariants @default(diag)
+  speaker     Speaker         @default(a)
+  align       Alignment       @default(center)
+  text        String?
+  eng         String?
+  roman       String?
+  value       String?
+  textAudio   String?
+  engAudio    String?
+  image       String?
+  ansType     SideOption?     
+  optType     SideOption?
+  prev        String?
+  next        String?
+  quiz        Boolean         @default(false)
+  playable    Boolean         @default(false)
+  engPlayable Boolean         @default(false)
+  show        ShowEnums       @default(yes)
+  showEng     ShowEnums       @default(onEnded)
+  showRoman   ShowEnums       @default(yes)
+  done        Boolean         @default(false)
+  lessonId    String
+  stepId      String?
+  meanerId    String?
+  voice       String?         @default("f1")
+  showSpeaker Boolean?        @default(false)
+  lesson      Lesson          @relation(fields: [lessonId], references: [id], onDelete: Cascade)
+  // meaner      Meaning?        @relation(fields: [meanerId], references: [id], onDelete: Cascade)
+  step        Step?           @relation(fields: [stepId], references: [id], onDelete: Cascade)
+  elems       elem[]
+}
+
+enum LineVariants {
+  diag
+  select
+  match
+  arrange
+  filling
+  writing
+  speaking
+  obj
+  narrate
+  scene
+
+
+	// @@map("LineTypeOptions")
+}
+
+enum SideOption {
+  text
+  tran
+  roman
+  img
+  textAudio
+  eng
+  engAudio
+}
+
+enum ShowEnums {
+  yes
+  no
+  onPlay
+  onDone
+  onEnded
+}
+
+enum Speaker {
+  narator
+  a
+  b
+  c
+}
+
+enum Alignment {
+  center
+  left
+  right
+}
