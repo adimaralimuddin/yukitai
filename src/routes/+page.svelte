@@ -11,10 +11,17 @@
 
 		loading = false;
 	};
+	let subs = {};
 </script>
 
 <h6>Loading data in<br /><code>+page.svelte</code></h6>
 <h1 class="h1 font-bold text-red-400">Tailwind added</h1>
+<button
+	class="rounded-xl bg-green-500 p-4"
+	on:click={async () => {
+		subs = await trpc($page).test.sub.get.mutate({ name: 'horray', age: 23 });
+	}}>sub: {JSON.stringify(subs)}</button
+>
 <a
 	href="#load"
 	role="button"
