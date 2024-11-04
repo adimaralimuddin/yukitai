@@ -1,8 +1,17 @@
 import { initTRPC } from '@trpc/server';
 import { z } from 'zod';
+import { getXataClient, XataClient } from '../../../../xata';
 import prisma from '../prisma.server';
 import type { Context } from './context';
 export const t = initTRPC.context<Context>().create();
+
+// Generated with CLI
+// import { getXataClient } from "./xata";
+
+const xata = new XataClient({
+	apiKey: process.env.XATA_API_KEY,
+	branch: process.env.XATA_BRANCH
+});
 
 export const router = t.router({
 	greeting: t.procedure.query(async () => {
@@ -12,9 +21,16 @@ export const router = t.router({
 	}),
 	test: t.router({
 		sub: t.router({
-			get: t.procedure.input(z.object({ name: z.string(), age: z.number() })).mutation((x) => {
-				return JSON.stringify({ input: x.input });
-			})
+			get: t.procedure
+				.input(z.object({ name: z.string(), age: z.number() }))
+				.mutation(async (x) => {
+					const records = await xata.db.posts
+						.select(['xata_id', 'labels', 'slug', 'text', 'title', 'views'])
+						.getAll();
+
+					console.log(records);
+					return JSON.stringify(records);
+				})
 		})
 	})
 });
