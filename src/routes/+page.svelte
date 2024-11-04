@@ -20,7 +20,8 @@
 	class="rounded-xl bg-green-500 p-4"
 	on:click={async () => {
 		subs = await trpc($page).test.sub.get.mutate({ name: 'horray', age: 23 });
-	}}>sub: {JSON.stringify(subs)}</button
+		console.log(subs);
+	}}>sub</button
 >
 <a
 	href="#load"
