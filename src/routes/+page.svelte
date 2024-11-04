@@ -19,7 +19,7 @@
 <button
 	class="rounded-xl bg-green-500 p-4"
 	on:click={async () => {
-		subs = await trpc($page).test.sub.get.mutate({ name: 'horray', age: 23 });
+		subs = await trpc($page).test.sub.get.query();
 		console.log(subs);
 	}}>sub</button
 >

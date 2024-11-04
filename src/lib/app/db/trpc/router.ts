@@ -21,16 +21,14 @@ export const router = t.router({
 	}),
 	test: t.router({
 		sub: t.router({
-			get: t.procedure
-				.input(z.object({ name: z.string(), age: z.number() }))
-				.mutation(async (x) => {
-					const records = await xata.db.posts
-						.select(['xata_id', 'labels', 'slug', 'text', 'title', 'views'])
-						.getAll();
+			get: t.procedure.query(async (x) => {
+				const records = await xata.db.posts
+					.select(['xata_id', 'labels', 'slug', 'text', 'title', 'views'])
+					.getAll();
 
-					console.log(records);
-					return JSON.stringify(records);
-				})
+				console.log(records);
+				return JSON.stringify(records);
+			})
 		})
 	})
 });
