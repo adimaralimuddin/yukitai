@@ -1,17 +1,8 @@
 import { initTRPC } from '@trpc/server';
-import { z } from 'zod';
-import { getXataClient, XataClient } from '../../../../xata';
-import prisma from '../prisma.server';
+import { getXataClient } from '../../../../xata';
 import type { Context } from './context';
 export const t = initTRPC.context<Context>().create();
-
-// Generated with CLI
-// import { getXataClient } from "./xata";
-
-const xata = new XataClient({
-	apiKey: process.env.XATA_API_KEY,
-	branch: process.env.XATA_BRANCH
-});
+const xata = getXataClient();
 
 export const router = t.router({
 	greeting: t.procedure.query(async () => {
@@ -27,7 +18,7 @@ export const router = t.router({
 					.getAll();
 
 				console.log(records);
-				return JSON.stringify(records);
+				return { records };
 			})
 		})
 	})
